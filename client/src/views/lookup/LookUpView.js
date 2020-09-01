@@ -20,6 +20,4 @@ export const LookUpView = () => {
 	)
 }
 
-export default withAuthenticationRequired(LookUpView, {
-	onRedirecting: () => <h3>Loading</h3>
-})
+export default LookUpView;
