@@ -2,12 +2,56 @@ import React from 'react';
 import { Router, Route, Switch } from "react-router-dom";
 import LoginView from './views/auth/LoginView'
 import LookUpView from './views/lookup/LookUpView'
+import Auth from './components/Auth'
+import LoadingScreen from './components/LoadingScreen';
 import { useAuth0 } from "@auth0/auth0-react";
-import history from "./utils/history";
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+// Material UI
+import {
+  createStyles,
+  jssPreset,
+  makeStyles,
+  StylesProvider,
+  ThemeProvider
+} from '@material-ui/core';
+import { createTheme } from './theme';
 
-import './App.css';
+import history from "./utils/history";
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
+const useStyles = makeStyles(() => createStyles({
+  '@global': {
+    '*': {
+      boxSizing: 'border-box',
+      margin: 0,
+      padding: 0,
+    },
+    html: {
+      '-webkit-font-smoothing': 'antialiased',
+      '-moz-osx-font-smoothing': 'grayscale',
+      height: '100%',
+      width: '100%'
+    },
+    body: {
+      height: '100%',
+      width: '100%'
+    },
+    '#root': {
+      height: '100%',
+      width: '100%'
+    }
+  }
+}));
+
+const darkStyle = {
+		direction: 'ltr',
+		responsiveFontSizes: true,
+		theme: 'ONE_DARK'
+}
 
 function App() {
+	useStyles();
 	const { isLoading, error } = useAuth0();
 
 	if(error) {
@@ -19,18 +63,22 @@ function App() {
 	}
 
 	if(isLoading) {
-		return <h3>Loading...</h3>
+		return <LoadingScreen />
 	}
 
   return (
-		<Router history = {history}>
-			<Switch>
-				<Route path='/' exact component={ LoginView}  />
-				<Route path='/lookup' component={ LookUpView } />
-			</Switch>
-   
-
-		</Router>
+		<ThemeProvider theme={createTheme(darkStyle)}>
+			<StylesProvider jss={jss}>
+			<Router history = {history}>
+				<Switch>
+					<Route path='/' exact component={ LoginView}  />
+					<Auth>			
+						<Route path='/lookup' component={ LookUpView } />
+					</Auth>
+				</Switch>
+			</Router>
+			</StylesProvider>
+		</ThemeProvider>
   );
 }
 

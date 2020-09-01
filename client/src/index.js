@@ -9,6 +9,7 @@ import { enableES5 } from 'immer';
 // Auth0
 import { Auth0Provider as Auth } from '@auth0/auth0-react';
 import './index.css';
+import 'nprogress/nprogress.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -19,6 +20,7 @@ enableES5();
 
 // Enable Sentry
 Sentry.init({
+	// Lar dette ligge her for presentasjon, dette burde ligge i en udelt mappe, slik som forkaringen ved Auth nedenfor.
   dsn: "https://59b91f0ea056489da848677a3920e76a@o441984.ingest.sentry.io/5412944",
   integrations: [
     new Integrations.BrowserTracing(),
@@ -36,7 +38,7 @@ const onRedirectCallback = (appState) => {
 
 ReactDOM.render(
   <Auth
-		// Informasjonen ville vanligvis ligge i en egen mappe som ikke deles paa github pga. sikkerhet.
+		// Informasjonen ville vanligvis ligge i et objekt i en egen mappe som ikke deles paa github pga. sikkerhet.
 		// Dette ville da f.eks se slik ut :
 		// domain = {../secret/config.domain}
 		// clientId = {../secret/config.domain}
