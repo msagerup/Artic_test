@@ -68,13 +68,9 @@ function FileDrop({className, ...rest}) {
 	// Send file to node server.
 	const sendFileToServer = () => {
 		// Load file.
-		console.log(files[0])
-
-
-
 		let formData = new FormData();
 		formData.append('file', files[0])
-
+		// Send file to Node server.
 		axios({
 			method: 'post',
 			headers: {
@@ -88,41 +84,8 @@ function FileDrop({className, ...rest}) {
 		})
 		.catch(error => {
 			console.log(error)
+			Sentry.captureMessage(error);
 		})
-
-		// // console.log(formData)
-		// fetch('http://localhost:5000/api/file', {
-		// method: 'POST',
-		// body: formData
-		// })
-		// .then(response => console.log(response.json()))
-		// .then(data => console.log(data));
-
-
-		// post(url, file )
-		// .then(res => {
-		// 	console.log(res)
-		// })
-
-	// 	let reader = new FileReader()
-	// 	reader.readAsDataURL(files[0])
-	// 	reader.onload = e => {
-	// 	console.warn('loaded', e.target.result)
-	// 	// Send with axios.
-	// 	const url = 'http://localhost:5000/api/file'
-	// 	const formData = {file: e.target.result}
-	// 	// Axios post.
-	// 	return post(url, formData)
-	// 	.then(res => {
-	// 		console.log(res)
-	// 	})
-	// 	.catch((error => {
-	// 		console.log(error)
-	// 		Sentry.captureMessage(error);
-	// 	}))
-	// }
-
-
 	}
 
 	const handleRemoveAll = () => {
