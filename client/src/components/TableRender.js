@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { useTable } from 'react-table'
 import { useSelector } from 'react-redux';
-
+import * as Sentry from "@sentry/react";
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef()
@@ -16,18 +16,47 @@ const IndeterminateCheckbox = React.forwardRef(
 )
 
 function TableRender({ apiData }) {
-	const orgInfo = useSelector(state => state.apiData)
-	
+
+	// Need to unwind dataset to use in react table.
+	const simpleOrgInfo = apiData.map(item => {
+		// Do error  Sentry reporting here. (if time)
+		// Sentry error reporting
+		// if(!item.navn) {
+		// 	Sentry.captureMessage(`OrgNumber: ${item.navn} is missing value for 'navn'`);
+		// }
+		// if(!item.forretningsadresse.kommune) {
+		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'kommune'`);
+		// }
+		// if(!item.hjemmeside) {
+		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'hjemmeside'`);
+		// }
+		// if(!item.naeringskode1.kode) {
+		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'naeringskode'`);
+		// }
+		// if(!item.antallAnsatte) {
+		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'item.'antallAnsatte'`);
+		// }
+		
+		return {
+			navn: item.navn || 'N/A',
+			orgNum: item.organisasjonsnummer || 'N/A' ,
+			kommune: item.forretningsadresse.kommune || 'N/A' ,
+			hjemmeside: item.hjemmeside || 'N/A',
+			kode: item.naeringskode1.kode || 'N/A',
+			antallAnsatte: item.antallAnsatte 
+		}
+	})
+
 	const data = React.useMemo(
-		() => apiData,
+		() => simpleOrgInfo,
 		[]
 	)
-	
+
 	const columns = React.useMemo(
 		() => [
 			{
 				Header: 'Organisasjonsnummer',
-				accessor: 'organisasjonsnummer', // accessor is the "key" in the data
+				accessor: 'orgNum', 
 			},
 			{
 				Header: 'Selskapsnavn',
@@ -35,7 +64,19 @@ function TableRender({ apiData }) {
 			},
 			{
 				Header: 'Kommune',
-				accessor: 'forettningsadresse',
+				accessor: 'kommune',
+			},
+			{
+				Header: 'Hjemmeside',
+				accessor: 'hjemmeside',
+			},
+			{
+				Header: 'Næringskode',
+				accessor: 'kode',
+			},
+			{
+				Header: 'Ansatte',
+				accessor: 'antallAnsatte',
 			},
 		],
 		[]
@@ -62,7 +103,7 @@ function TableRender({ apiData }) {
 					<IndeterminateCheckbox
 						{...getToggleHideAllColumnsProps()}
 					/>
-					 Toggle All
+					 Vis alle
         </div>
         {allColumns.map(column => (
           <div key={column.id}>
@@ -110,7 +151,7 @@ function TableRender({ apiData }) {
         </tbody>
       </table>
       <pre>
-				{JSON.stringify(state, null, 2)}
+				{/* {JSON.stringify(state, null, 2)} */}
 			</pre>
     </>	
 	)

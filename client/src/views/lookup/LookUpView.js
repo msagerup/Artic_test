@@ -13,7 +13,6 @@ export const LookUpView = () => {
 	const orgInfo = useSelector(state => state.apiData.orgInfo.orgInfo)
 
 
-	
 	const testSentry = () => {
 		Sentry.captureMessage("Is this right?");
 		console.log('ran')
