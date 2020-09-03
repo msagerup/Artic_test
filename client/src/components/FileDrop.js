@@ -10,7 +10,8 @@ import { orgInfoFromServer } from '../actions/orgNumActions';
 import {
   Box,
   Button,
-  Link,
+	Link,
+	Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -65,9 +66,6 @@ function FileDrop({className, ...rest}) {
 	const [fileType, SetFileType] = useState('')
 	const dispatch = useDispatch();
 
-	console.log('999',fileType)
-	
-
   const handleDrop = useCallback(acceptedFiles => {
 		// Check file type
 		const fileCheck = acceptedFiles[0].name.split('.')[1]; 
@@ -111,12 +109,12 @@ function FileDrop({className, ...rest}) {
   });
 
   return (
-    <div >
-      { files.length > 0 ? (
-        ''
-      ) :
-      (
-      <div
+		<Grid
+		 	container
+			direction="column"
+			justify="space-evenly"
+		  >
+      <Grid item
         className={clsx({
           [classes.dropZone]: true,
           [classes.dragActive]: isDragActive
@@ -125,7 +123,7 @@ function FileDrop({className, ...rest}) {
       >
         <input {...getInputProps()} />
         <div>
-          <Typography gutterBottom variant="h3">
+          <Typography gutterBottom variant="h3" style={{color: '#ffffff'}}>
             Select file
           </Typography>
           <Box mt={2}>
@@ -135,30 +133,32 @@ function FileDrop({className, ...rest}) {
             </Typography>
           </Box>
         </div>
-      </div>
-      )
-    }
+      </Grid>
+      
       {files.length > 0 && (
-        <>
-          <div>
-            <List className={classes.list}>
+        <div>
+          <>
+            <Grid item>
               {files.map((file, i) => (
                 <div key={i}>
-                  <ListItem divider={i < files.length - 1}>
-                    <ListItemIcon>
-                      {/* <FileCopyIcon /> */}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={file.name}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                      // secondary={bytesToSize(file.size)}
-                    />
-                  </ListItem>
+									<Typography variant='h5' color='textPrimary' style={{paddingTop: '20px'}}>
+										File to upload: {file.name}
+									</Typography>
                 </div>
               ))}
-            </List>
-          </div>
-          <div className={classes.actions}>
+            </Grid>
+          </>
+					<Grid item>
+						<Typography
+							className={classes.title}
+							variant="h5"
+							color="secondary"
+						>
+							{fileType === 'csv' ? 'csv files not fully supported, this might not work, but give it a try :)': ''}
+						</Typography>
+					</Grid>
+          <Grid item className={classes.actions}>
+					
 						<Button
 						  onClick={handleRemoveAll}
 						  size="small"
@@ -179,17 +179,12 @@ function FileDrop({className, ...rest}) {
 							{`Upload ${fileType} And Search`}
             </Button>
 						)}
-						<Typography
-							className={classes.title}
-							variant="h5"
-							color="secondary"
-       	 		>
-								{fileType === 'csv' ? 'csv files not fully supported, this might not work, but give it a try :)': ''}
-						</Typography>
-          </div>
-        </>
+						
+          </Grid>
+					
+        </div>
       )}
-    </div>
+    </Grid>
   );
 }
 

@@ -16,6 +16,7 @@ import {
   ThemeProvider
 } from '@material-ui/core';
 import { createTheme } from './theme';
+import SiteLayout from './Layout/SiteLayout'
 
 import history from "./utils/history";
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -70,12 +71,14 @@ function App() {
 		<ThemeProvider theme={createTheme(darkStyle)}>
 			<StylesProvider jss={jss}>
 			<Router history = {history}>
+				<SiteLayout>
 				<Switch>
 					<Route path='/' exact component={ LoginView}  />
 					<Auth>			
 						<Route path='/lookup' component={ LookUpView } />
 					</Auth>
 				</Switch>
+				</SiteLayout>
 			</Router>
 			</StylesProvider>
 		</ThemeProvider>
