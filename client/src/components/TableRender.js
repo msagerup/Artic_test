@@ -44,8 +44,8 @@ function TableRender({ apiData }) {
 			navn: item.navn || 'N/A',
 			orgNum: item.organisasjonsnummer || 'N/A' ,
 			kommune: item.forretningsadresse.kommune || 'N/A' ,
-			hjemmeside: item.hjemmeside || 'N/A',
-			kode: item.naeringskode1.kode || 'N/A',
+			hjemmeside: item.hjemmeside ? item.hjemmeside : 'N/A',
+			kode: item.naeringskode1 ? item.naeringskode1.kode : 'N/A',
 			antallAnsatte: item.antallAnsatte 
 		}
 	})
@@ -163,7 +163,5 @@ function TableRender({ apiData }) {
 TableRender.propTypes = {
 	apiData: PropTypes.array
 }
-
-
 
 export default TableRender;

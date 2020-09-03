@@ -1,4 +1,4 @@
-import React, { useState, useCallback} from 'react';
+import React, { useState, useCallback, useEffect} from 'react';
 import { useDropzone } from 'react-dropzone';
 import clsx from 'clsx';
 import axios, { post } from 'axios';
@@ -62,10 +62,17 @@ const useStyles = makeStyles(theme => ({
 function FileDrop({className, ...rest}) {
 	const classes = useStyles();
 	const [files, setFiles] = useState([]);
+	const [fileType, SetFileType] = useState('')
 	const dispatch = useDispatch();
 
+	console.log('999',fileType)
+	
+
   const handleDrop = useCallback(acceptedFiles => {
-    setFiles(acceptedFiles);
+		// Check file type
+		const fileCheck = acceptedFiles[0].name.split('.')[1]; 
+		SetFileType(fileCheck)
+		setFiles(acceptedFiles);
 	}, []);
 	
 	// Send file to node server.
@@ -94,7 +101,9 @@ function FileDrop({className, ...rest}) {
 	}
 
 	const handleRemoveAll = () => {
-    setFiles([]);
+		setFiles([]);
+		dispatch(orgInfoFromServer([]));
+		
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -115,13 +124,6 @@ function FileDrop({className, ...rest}) {
         {...getRootProps()}
       >
         <input {...getInputProps()} />
-        <div>
-          <img
-            alt="Select file"
-            className={classes.image}
-            src="/static/images/undraw_add_file2_gvbb.svg"
-          />
-        </div>
         <div>
           <Typography gutterBottom variant="h3">
             Select file
@@ -157,19 +159,33 @@ function FileDrop({className, ...rest}) {
             </List>
           </div>
           <div className={classes.actions}>
-            <Button onClick={handleRemoveAll} size="small">
-              Remove File
+						<Button
+						  onClick={handleRemoveAll}
+						  size="small"
+							>
+              {/* {fileType === 'xlsx' || fileType === 'csv' ? `File type of ${fileType} is not supported ` : 'Remove file'} */}
+							Remove File
             </Button>
+						{ fileType !== 'xlsx' && fileType !== 'csv' ? (
+							`Filetype : ${fileType} is not supported`
+						) : (
             <Button
               color="secondary"
               size="small"
               variant="contained"
               onClick={sendFileToServer}
-              // disabled={imageUrl ? true : false}
+              // disabled={fileType !== 'xlsx' && fileType !== 'csv' ? true : false}
             >
-              {/* {imageUrl ? 'Filed uploaded' : 'Upload file'} */}
-							Upload
+							{`Upload ${fileType} And Search`}
             </Button>
+						)}
+						<Typography
+							className={classes.title}
+							variant="h5"
+							color="secondary"
+       	 		>
+								{fileType === 'csv' ? 'csv files not fully supported, this might not work, but give it a try :)': ''}
+						</Typography>
           </div>
         </>
       )}
