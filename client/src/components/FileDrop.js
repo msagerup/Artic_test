@@ -3,8 +3,10 @@ import { useDropzone } from 'react-dropzone';
 import clsx from 'clsx';
 import axios, { post } from 'axios';
 import * as Sentry from "@sentry/react";
-// import PerfectScrollbar from 'perfect-scrollbar';
-
+// Redux
+import { useDispatch } from 'react-redux';
+import { orgInfoFromServer } from '../actions/orgNumActions';
+ 
 import {
   Box,
   Button,
@@ -59,7 +61,8 @@ const useStyles = makeStyles(theme => ({
 
 function FileDrop({className, ...rest}) {
 	const classes = useStyles();
-  const [files, setFiles] = useState([]);
+	const [files, setFiles] = useState([]);
+	const dispatch = useDispatch();
 
   const handleDrop = useCallback(acceptedFiles => {
     setFiles(acceptedFiles);
@@ -80,7 +83,9 @@ function FileDrop({className, ...rest}) {
 			url: 'http://localhost:5000/api/file'
 		})
 		.then(res => {
+			// Send res to Redux.
 			console.log(res)
+			dispatch(orgInfoFromServer(res.data));
 		})
 		.catch(error => {
 			console.log(error)
