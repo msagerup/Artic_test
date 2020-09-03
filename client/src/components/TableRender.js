@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 import { useTable } from 'react-table'
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import * as Sentry from "@sentry/react";
+import ExcelExport from './ExcelExport'
+
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef()
@@ -57,7 +60,7 @@ function TableRender({ apiData }) {
 			{
 				Header: 'Organisasjonsnummer',
 				accessor: 'orgNum', 
-			},
+			}, 
 			{
 				Header: 'Selskapsnavn',
 				accessor: 'navn',
@@ -153,8 +156,12 @@ function TableRender({ apiData }) {
       <pre>
 				{/* {JSON.stringify(state, null, 2)} */}
 			</pre>
+			<ExcelExport data={simpleOrgInfo} />
     </>	
 	)
+}
+TableRender.propTypes = {
+	apiData: PropTypes.array
 }
 
 

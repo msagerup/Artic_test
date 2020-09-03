@@ -20,10 +20,6 @@ export const LookUpView = () => {
 
 	return (
 		<div>
-			This is the lookup
-			Sentry 
-
-			<button onClick={testSentry}>Break the world</button>
 			<FileDrop />
 			{orgInfo ? <TableRender apiData = {orgInfo} /> : 'No file loaded' }
 		</div>
