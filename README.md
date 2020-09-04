@@ -11,7 +11,7 @@ The user must log in with Auoth0. Once logged in, the user can upload a Excel Sp
 
 Currenty there is an issue with the Auth0 script.
 
-- AFER LOGIN OR SIGNUP. You must manually type the path '/lookup' to to redirect to the main page.
+- AFTER LOGIN OR SIGNUP. You must manually type the path '/lookup' to to redirect to the main page.
 
 ` http://http://localhost:3000/lookup`
 
