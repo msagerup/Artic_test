@@ -45,6 +45,8 @@ routes.post('/api/file', upload.single('file'), (req, res) => {
 				.catch(error => {
 					errors.push(error);
 					console.log(error)
+					// res.send(error)
+					// console.log(error)
 				})
 			)
 		}
