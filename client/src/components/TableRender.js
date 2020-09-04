@@ -1,44 +1,37 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { useTable } from 'react-table'
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import * as Sentry from "@sentry/react";
 import ExcelExport from './ExcelExport'
 
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+// Have to do this, theme is not working.
+import MaUTable from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
-
-    return <input type="checkbox" ref={resolvedRef} {...rest} />
-  }
-)
 
 function TableRender({ apiData }) {
-
 	// Need to unwind dataset to use in react table.
 	const simpleOrgInfo = apiData.map(item => {
 		// Do error  Sentry reporting here. (if time)
 		// Sentry error reporting
-		// if(!item.navn) {
-		// 	Sentry.captureMessage(`OrgNumber: ${item.navn} is missing value for 'navn'`);
-		// }
-		// if(!item.forretningsadresse.kommune) {
-		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'kommune'`);
-		// }
-		// if(!item.hjemmeside) {
-		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'hjemmeside'`);
-		// }
-		// if(!item.naeringskode1.kode) {
-		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'naeringskode'`);
-		// }
-		// if(!item.antallAnsatte) {
-		// 	Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'item.'antallAnsatte'`);
-		// }
+		if(!item.navn) {
+			Sentry.captureMessage(`OrgNumber: ${item.navn} is missing value for 'navn'`);
+		}
+		if(!item.forretningsadresse.kommune) {
+			Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'kommune'`);
+		}
+		if(!item.hjemmeside) {
+			Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'hjemmeside'`);
+		}
+		if(!item.naeringskode1.kode) {
+			Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'naeringskode'`);
+		}
+		if(!item.antallAnsatte) {
+			Sentry.captureMessage(`OrgNumber: ${item.organisasjonsnummer} is missing value for 'item.'antallAnsatte'`);
+		}
 		
 		return {
 			navn: item.navn || 'N/A',
@@ -49,9 +42,10 @@ function TableRender({ apiData }) {
 			antallAnsatte: item.antallAnsatte 
 		}
 	})
-
+	
 	const data = React.useMemo(
 		() => simpleOrgInfo,
+	// eslint-disable-next-line
 		[]
 	)
 
@@ -87,77 +81,48 @@ function TableRender({ apiData }) {
 
 	const {
     getTableProps,
-    getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    allColumns,
-    getToggleHideAllColumnsProps,
-    state,
   } = useTable({
     columns,
     data,
 	})
 
+
 	return (
-		<>
-      <div>
-        <div>
-					<IndeterminateCheckbox
-						{...getToggleHideAllColumnsProps()}
-					/>
-					 Vis alle
-        </div>
-        {allColumns.map(column => (
-          <div key={column.id}>
-            <label>
-							<input type="checkbox"
-								{...column.getToggleHiddenProps()}
-							/>{' '}
-								{column.id}
-            </label>
-          </div>
+		<div>
+		<MaUTable {...getTableProps()}>
+      <TableHead>
+        {headerGroups.map(headerGroup => (
+          <TableRow {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <TableCell {...column.getHeaderProps()}>
+                {column.render('Header')}
+              </TableCell>
+            ))}
+          </TableRow>
         ))}
-        <br />
-      </div>
-			<table
-				{...getTableProps()}
-			>
-        <thead>
-          {headerGroups.map(headerGroup => (
-						<tr 
-							{...headerGroup.getHeaderGroupProps()}
-						>
-							{
-								headerGroup.headers.map(column => (
-									<th {...column.getHeaderProps()}>{column.render('Header')}</th>
-								))
-							}
-            </tr>
-          ))}
-        </thead>
-				<tbody
-				 	{...getTableBodyProps()}
-				 >
-					{
-						rows.map((row, i) => {
-							prepareRow(row)
-							return (
-								<tr {...row.getRowProps()}>
-									{row.cells.map(cell => {
-										return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-									})}
-								</tr>
-							)
-						})
-					}
-        </tbody>
-      </table>
-      <pre>
-				{/* {JSON.stringify(state, null, 2)} */}
-			</pre>
-			<ExcelExport data={simpleOrgInfo} />
-    </>	
+      </TableHead>
+      <TableBody>
+        {rows.map((row, i) => {
+          prepareRow(row)
+          return (
+            <TableRow {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return (
+                  <TableCell {...cell.getCellProps()}>
+                    {cell.render('Cell')}
+                  </TableCell>
+                )
+              })}
+            </TableRow>
+          )
+        })}
+      </TableBody>
+    </MaUTable>
+		<ExcelExport data={simpleOrgInfo} />
+		</div>
 	)
 }
 TableRender.propTypes = {

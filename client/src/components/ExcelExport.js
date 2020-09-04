@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactExport from "react-export-excel";
 import PropTypes from 'prop-types';
+import {
+  Button,
+} from '@material-ui/core';
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
@@ -9,11 +12,17 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 function ExcelExport({data}) {
 	const dataSet = data;
   
-
-
-
 	return (
-		<ExcelFile element={<button>Download Data</button>}>
+		<ExcelFile element={
+			<Button
+				color="secondary"
+				size="small"
+				variant="contained"
+				style={{marginTop: '20px'}}
+				>
+				Download Data
+			</Button>
+		}>
 			<ExcelSheet data={dataSet} name="Business lookup">
 				<ExcelColumn label="Organisasjonsnummer" value="orgNum"/>
 				<ExcelColumn label="Selskapsnavn" value="navn"/>

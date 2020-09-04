@@ -4,6 +4,7 @@ import LoginView from './views/auth/LoginView'
 import LookUpView from './views/lookup/LookUpView'
 import Auth from './components/Auth'
 import LoadingScreen from './components/LoadingScreen';
+import Topbar from './components/TopBar'
 import { useAuth0 } from "@auth0/auth0-react";
 import { create } from 'jss';
 import rtl from 'jss-rtl';
@@ -71,6 +72,7 @@ function App() {
 		<ThemeProvider theme={createTheme(darkStyle)}>
 			<StylesProvider jss={jss}>
 			<Router history = {history}>
+				<Topbar />
 				<SiteLayout>
 				<Switch>
 					<Route path='/' exact component={ LoginView}  />

@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback} from 'react';
 import { useDropzone } from 'react-dropzone';
 import clsx from 'clsx';
-import axios, { post } from 'axios';
+import axios from 'axios';
 import * as Sentry from "@sentry/react";
 // Redux
 import { useDispatch } from 'react-redux';
@@ -12,10 +12,6 @@ import {
   Button,
 	Link,
 	Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Typography,
   makeStyles
 } from '@material-ui/core';
@@ -163,18 +159,18 @@ function FileDrop({className, ...rest}) {
 						  onClick={handleRemoveAll}
 						  size="small"
 							>
-              {/* {fileType === 'xlsx' || fileType === 'csv' ? `File type of ${fileType} is not supported ` : 'Remove file'} */}
 							Remove File
             </Button>
 						{ fileType !== 'xlsx' && fileType !== 'csv' ? (
-							`Filetype : ${fileType} is not supported`
+							<Typography variant='h5' color="error" style={{paddingTop: '3.5px'}}>
+							Filetype: <span style={{fontWeight: 'bold'}}>{fileType}</span> is not supported
+							</Typography>
 						) : (
             <Button
               color="secondary"
               size="small"
               variant="contained"
               onClick={sendFileToServer}
-              // disabled={fileType !== 'xlsx' && fileType !== 'csv' ? true : false}
             >
 							{`Upload ${fileType} And Search`}
             </Button>
