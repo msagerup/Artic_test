@@ -66,4 +66,4 @@ Currenty there is an issue with the Auth0 script.
 
 Make sure client runs on port `3000` and server runs on port `5000`
 
-- Thats is.
+- That's it.
