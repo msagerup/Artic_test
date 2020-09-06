@@ -54,7 +54,7 @@ const darkStyle = {
 
 function App() {
 	useStyles();
-	const { isLoading, error, isAuthenticated } = useAuth0();
+	const { isLoading, error } = useAuth0();
 
 	if(error) {
 		return (
@@ -63,8 +63,6 @@ function App() {
 			</>
 		)
 	}
-
-	console.log('Autehnticatred', isAuthenticated)
 
 	if(isLoading) {
 		return <LoadingScreen />
