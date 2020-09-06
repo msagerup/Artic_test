@@ -7,15 +7,7 @@
 A simple application that uses the most modern implementations.
 The user must log in with Auoth0. Once logged in, the user can upload a Excel Spread Sheet with Norwegian Org.Numbers. The app does a api call to Brønnesund and returns information about the companies.
 
-## OBS!
 
-Currenty there is an issue with the Auth0 script.
-
-- AFER LOGIN OR SIGNUP. You must manually type the path '/lookup' to to redirect to the main page.
-
-` http://http://localhost:3000/lookup`
-
-#
 
 ### The app uses:
 
