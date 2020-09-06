@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     paddingTop: 64,
     [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256
+			paddingLeft: 256,
+			paddingRight: 256
     }
   },
   contentContainer: {

@@ -35,6 +35,15 @@ const onRedirectCallback = (appState) => {
   history.push('/lookup');
 };
 
+// This will also work.
+// const onRedirectCallback = appState => {
+//   history.push(
+//     appState && appState.targetUrl
+//       ? appState.targetUrl
+//       : window.location.href = "http://localhost:3000/lookup"
+//   );
+// };
+
 ReactDOM.render(
 	<Provider store={store}>
 		<Auth
