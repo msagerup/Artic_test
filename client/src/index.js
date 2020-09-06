@@ -32,11 +32,7 @@ Sentry.init({
 });
 
 const onRedirectCallback = (appState) => {
-  history.push(
-    appState && appState.returnTo
-      ? appState.returnTo
-      : window.location.pathname
-  );
+  history.push('/lookup');
 };
 
 ReactDOM.render(
